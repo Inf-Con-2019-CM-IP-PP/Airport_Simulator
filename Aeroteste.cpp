@@ -4,23 +4,20 @@
 #include <conio.h>
 #define quantMax_Avioes 3 // Pode gerar de 0 a 3 aviões
 
-struct DadosAviao
-{
+struct DadosAviao {
     int Cod_Aviao; // Indica se o avião vai decolar(1) ou pousar(2)
     int Combustivel; // Quantidade de combustível
     int Num_pista; // Qual pista que o avião usará
 
 };
 
-struct NodoFila
-{
+struct NodoFila {
     DadosAviao info; // Contém os dados de cada avião
     NodoFila *proximo; // Aponta para o próximo elemento da fila
 
 };
 
-struct Fila
-{
+struct Fila {
     NodoFila *primeiro; // Aponta para o primeiro elemento da fila
     NodoFila *ultimo; // Aponta para o último elemento da fila
 
@@ -31,8 +28,7 @@ void geraAvioes_Decolar (Fila *F, int numPista); // Gera aviões para decolar e a
 void geraAvioes_Pousar (Fila *F, int numPista );  // Gera aviões para pousar e atribui dados a eles
 void listagemAvioes (Fila *F); //Exibe os aviões em uma determinada fila
 
-int main (int argc, char** argv)
-{
+int main (int argc, char** argv) {
     // Declaração de variáveis
     Fila FilaAvioes_1, FilaAvioes_2,FilaAvioes_3;
     int pista_Decola, pista_Pousa, quant_Decola, quant_Pousa;
