@@ -3,7 +3,8 @@
 
 struct Info {
 	int id ;
-	int fuel ;
+	int fuelStart ;
+	int fuelNow ;
 };
 
 struct Plane {
@@ -13,14 +14,15 @@ struct Plane {
 
 struct Row {
 	int qt ;
-	
-	Plane *first ;
+	Plane *first, *last ;
 };
 
-Plane* createPlane() ;
+void createRows() ;
 
-int generatePlanes() ;
+Plane* createPlane(char c) ;
 
+void insertPlane(Plane *p, Row *r) ;
 
+void generatePlanes() ;
 
 #endif

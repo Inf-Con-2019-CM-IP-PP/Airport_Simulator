@@ -1,5 +1,9 @@
 #include "airplanefunc.h"
 
 int main() {
-	return 0;
+	createRows() ;
+	
+	generatePlanes() ;
+	
+	return 0 ;
 }
