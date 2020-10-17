@@ -1,18 +1,11 @@
 #include "airplanefunc.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
-struct Info {
-	int id ;
-	int fuel ;
-};
+Row at11, at12, at21, at22 ;
+Row dec ;
 
-struct Airplane {
-	Info inf ;
-	Airplane *next ;
-};
-
-struct Row {
-	int qt ;
-	int cod ;
-	
-	Airplane *first ;
-};
+Plane* createPlane() {
+	return NULL ;
+}
