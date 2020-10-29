@@ -4,7 +4,7 @@
 #include <time.h>
 
 Row at11, at12, at21, at22 ;
-Row dec ;
+Row dec1, dec2, dec3 ;
 
 int lastIDP = 0 ;
 int lastIDI = -1 ;
@@ -14,11 +14,12 @@ void createRows() {
 	vazia.first = NULL ; vazia.last = NULL ; vazia.qt = 0 ;
 	
 	at11 = vazia ; at12 = vazia ; at21 = vazia ; at22 = vazia ;
-	dec = vazia ;
+	dec1 = vazia ; dec2 = vazia ; dec3 = vazia ;
 }
 
 Plane* createPlane(char c) {
 	Plane *p ;
+	p = (Plane *) malloc(sizeof(Plane)) ;
 	
 	if (c == 'a') {
 		p->inf.id = lastIDP + 2 ;
@@ -33,7 +34,7 @@ Plane* createPlane(char c) {
 
 void insertPlane(Plane *p, Row *r) {
 	if (r->first == NULL) {
-		p->next = r->last->next ;
+		p->next = NULL ;
 		r->first = r->last = p ;
 	} else {
 		p->next = r->last->next ;
@@ -43,7 +44,7 @@ void insertPlane(Plane *p, Row *r) {
 }
 
 void generatePlanes() {
-	Row *men1, *men2, *men ;
+	Row *menA1, *menA2, *menA ;
 	
 	int qtA = rand()%4 ;
 	Plane *vA[qtA] ;
@@ -51,15 +52,14 @@ void generatePlanes() {
 	for (int i=0; i < qtA; i++) {
 		vA[i] = createPlane('a') ;
 		
-		if (at11.qt <= at12.qt) men1 = &at11 ;
-		else men1 = &at12 ;
-		if (at21.qt <= at22.qt) men2 = &at21 ;
-		else &at22 ;
-		if (men1->qt <= men2->qt) men = men1 ;
-		else men = men2 ;
+		menA1 = at11.qt <= at12.qt ? &at11 : &at12 ;
+		menA2 = at21.qt <= at22.qt ? &at21 : &at22 ;
+		menA = menA1->qt <= menA2->qt ? menA1 : menA2 ;
 		
-		insertPlane(vA[i], men) ;
+		insertPlane(vA[i], menA) ;
 	}
+	
+	Row *menD1, *menD ;
 	
 	int qtD = rand()%4 ;
 	Plane *vD[qtD] ;
@@ -67,7 +67,10 @@ void generatePlanes() {
 	for (int i=0; i < qtD; i++) {
 		vD[i] = createPlane('d') ;
 		
-		insertPlane(vD[i], &dec) ;
+		menD1 = dec1.qt <= dec2.qt ? &dec1 : &dec2 ;
+		menD = menD1->qt <= dec3.qt ? menD1 : &dec3 ;
+		
+		insertPlane(vD[i], menD) ;
 	}
 }
 
