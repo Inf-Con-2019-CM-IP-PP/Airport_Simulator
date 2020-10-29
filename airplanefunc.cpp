@@ -74,12 +74,30 @@ void generatePlanes() {
 	}
 }
 
-
-
-
-
-
-
+void decreaseFuel() {
+	for (Plane *act=at11.first; act != NULL; act=act->next) {
+		act->inf.fuelNow-- ;
+	}
+	for (Plane *act=at12.first; act != NULL; act=act->next) {
+		act->inf.fuelNow-- ;
+	}
+	for (Plane *act=at21.first; act != NULL; act=act->next) {
+		act->inf.fuelNow-- ;
+	}
+	for (Plane *act=at22.first; act != NULL; act=act->next) {
+		act->inf.fuelNow-- ;
+	}
+	
+	for (Plane *act=dec1.first; act != NULL; act=act->next) {
+		act->inf.fuelNow-- ;
+	}
+	for (Plane *act=dec2.first; act != NULL; act=act->next) {
+		act->inf.fuelNow-- ;
+	}
+	for (Plane *act=dec3.first; act != NULL; act=act->next) {
+		act->inf.fuelNow-- ;
+	}
+}
 
 
 

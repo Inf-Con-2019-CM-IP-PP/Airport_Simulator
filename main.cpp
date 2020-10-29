@@ -3,7 +3,11 @@
 int main() {
 	createRows() ;
 	
-	generatePlanes() ;
+	for (int repet=0; repet < 10; repet++) {
+		generatePlanes() ;
+		
+		decreaseFuel() ;
+	}
 	
 	return 0 ;
 }

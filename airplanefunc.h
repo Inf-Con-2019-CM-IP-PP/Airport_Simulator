@@ -25,4 +25,6 @@ void insertPlane(Plane *p, Row *r) ;
 
 void generatePlanes() ;
 
+void decreaseFuel() ;
+
 #endif
