@@ -49,12 +49,12 @@ void insertPlane(Plane *p, Row *r) {
 }
 
 void generatePlanes() {
-	Row *menA1, *menA2, *menA ;	//variáveis auxiliares criadas para apontar para a fila com menor número de aviões para aterrissar
+	Row *menA1, *menA2, *menA ;	//variaveis auxiliares criadas para apontar para a fila com menor numero de avioes para aterrissar
 	
 	int qtA = rand()%4 ;	//gera uma quantidade aleatória de aviões a serem aterrissados
-	Plane *vA[qtA] ;	//cria um vetor de ponteiros que apontam para os aviões a serem criados
+	Plane *vA[qtA] ;	//cria um vetor de ponteiros que apontam para os avioes a serem criados
 	
-	for (int i=0; i < qtA; i++) {	//gera um loop que cria e insere a quantidade de aviões que foram gerados nas menores filas
+	for (int i=0; i < qtA; i++) {	//gera um loop que cria e insere a quantidade de avioes que foram gerados nas menores filas
 		vA[i] = createPlane('a') ;
 		
 		menA1 = at11.qt <= at12.qt ? &at11 : &at12 ;
@@ -64,12 +64,12 @@ void generatePlanes() {
 		insertPlane(vA[i], menA) ;
 	}
 	
-	Row *menD1, *menD ;	//variáveis auxiliares criadas para apontar para a fila com menor número de aviões para decolar
+	Row *menD1, *menD ;	//variaveis auxiliares criadas para apontar para a fila com menor numero de avioes para decolar
 	
-	int qtD = rand()%4 ;	//gera uma quantidade aleatória de aviões a serem decolados
-	Plane *vD[qtD] ;	//cria um vetor de ponteiros que apontam para os aviões a serem criados
+	int qtD = rand()%4 ;	//gera uma quantidade aleatoria de avioes a serem decolados
+	Plane *vD[qtD] ;	//cria um vetor de ponteiros que apontam para os avioes a serem criados
 	
-	for (int i=0; i < qtD; i++) {	//gera um loop que cria e insere a quantidade de aviões que foram gerados nas menores filas
+	for (int i=0; i < qtD; i++) {	//gera um loop que cria e insere a quantidade de avioes que foram gerados nas menores filas
 		vD[i] = createPlane('d') ;
 		
 		menD1 = dec1.qt <= dec2.qt ? &dec1 : &dec2 ;
@@ -79,7 +79,9 @@ void generatePlanes() {
 	}
 }
 
-void decreaseFuel() {	
+void decreaseFuel() {
+	// Passa em cada fila por todos avioes e decrementa seu combustivel
+	
 	for (Plane *act=at11.first; act != NULL; act=act->next) {
 		act->inf.fuelNow-- ;
 	}
