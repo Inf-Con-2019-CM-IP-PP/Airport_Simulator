@@ -165,84 +165,37 @@ void landAndTakeOffPlanes() {
 	Row *aR[3] ; Plane *aO[3] ;
 	int qtF = fallPlanes(aO, aR) ; // Recebe os avioes prestes a cair e suas filas
 	
-	if (qtF == 0) { // Verifica a quantidade de avioes a cair e realiza cada caso
-		// Pista 1
-		if (at11.qt+at12.qt >= dec1.qt /*|| at12.qt >= dec1.qt*/) { // Verifica o tipo de lista mais vazia
-			if (at11.first == NULL && at12.first == NULL) { // Verifica se alguma pista e vazia
-			} else if (at11.first == NULL) {
-				removePlane(NULL, &at12, 'a') ;
-			} else if (at12.first == NULL) {
-				removePlane(NULL, &at11, 'a') ;
-			} else {
-				if (at11.first->inf.fuelNow <= at12.first->inf.fuelNow) removePlane(NULL, &at11, 'a') ;
-				else removePlane(NULL, &at12, 'a') ;
-			}
-		} else {
-			removePlane(NULL, &dec1, 'd') ;
-		}
-		
-		// Pista 2
-		if (at21.qt+at22.qt >= dec2.qt /*|| at22.qt >= dec2.qt*/) {
-			if (at21.first == NULL && at22.first == NULL) {
-			} else if (at21.first == NULL) {
-				removePlane(NULL, &at22, 'a') ;
-			} else if (at22.first == NULL) {
-				removePlane(NULL, &at21, 'a') ;
-			} else {
-				if (at21.first->inf.fuelNow <= at22.first->inf.fuelNow) removePlane(NULL, &at21, 'a') ;
-				else removePlane(NULL, &at22, 'a') ;
-			}
-		} else {
-			removePlane(NULL, &dec2, 'd') ;
-		}
-		
-		// Pista 3
-		if (dec3.first != NULL) removePlane(NULL, &dec3, 'd') ;
-	} else if (qtF == 1) {
+	bool p1Free=true, p2Free=true, p3Free=true ; // Marca qual pista foi usada para emergencia e estao livres
+	
+	if (qtF == 1) { // Verifica a quantidade de avioes a cair e realiza cada caso de emergencia
 		// Pista 3
 		removePlane(aO[0], aR[0], 'a') ; // Realiza o pouso de emergencia
+		p3Free = false ;
 		
-		// Pista 1
-		if (at11.qt+at12.qt >= dec1.qt) { // Verifica o tipo de lista mais vazia
-			if (at11.first == NULL && at12.first == NULL) { // Verifica se alguma pista e vazia
-			} else if (at11.first == NULL) {
-				removePlane(NULL, &at12, 'a') ;
-			} else if (at12.first == NULL) {
-				removePlane(NULL, &at11, 'a') ;
-			} else {
-				if (at11.first->inf.fuelNow <= at12.first->inf.fuelNow) removePlane(NULL, &at11, 'a') ;
-				else removePlane(NULL, &at12, 'a') ;
-			}
-		} else {
-			removePlane(NULL, &dec1, 'd') ;
-		}
-		
-		// Pista 2
-		if (at21.qt+at22.qt >= dec2.qt) {
-			if (at21.first == NULL && at22.first == NULL) {
-			} else if (at21.first == NULL) {
-				removePlane(NULL, &at22, 'a') ;
-			} else if (at22.first == NULL) {
-				removePlane(NULL, &at21, 'a') ;
-			} else {
-				if (at21.first->inf.fuelNow <= at22.first->inf.fuelNow) removePlane(NULL, &at21, 'a') ;
-				else removePlane(NULL, &at22, 'a') ;
-			}
-		} else {
-			removePlane(NULL, &dec2, 'd') ;
-		}
 	} else if (qtF == 2) {
 		// Pista 3
 		removePlane(aO[0], aR[0], 'a') ; // Realiza o pouso de emergencia
+		p3Free = false ;
 		
-		// Segundo pouse de emergencia
-		bool p1Free=true, p2Free=false ; // Marca qual pista foi usada para emergencia
-		if (at11.qt+at12.qt <= at21.qt+at22.qt) p1Free = false ;
+		// Segundo pouso de emergencia
+		if (at11.qt+at12.qt < at21.qt+at22.qt) p1Free = false ; // Escolhe a pista mais vazia
 		else p2Free = false ;
 		removePlane(aO[1], aR[1], 'a') ;
 		
-		// Pistas que sobraram
+	} else if (qtF >= 3) {
+		// Pista 3
+		removePlane(aO[0], aR[0], 'a') ; // Realiza o pouso de emergencia 1
+		p3Free = false ;
+		// Pista 2
+		removePlane(aO[1], aR[1], 'a') ; // Realiza o pouso de emergencia 2
+		p2Free = false ;
 		// Pista 1
+		removePlane(aO[2], aR[2], 'a') ; // Realiza o pouso de emergencia 3
+		p1Free = false ;
+	}
+	
+	// Pousa ou decola aviao nas pistas que estao livres
+	// Pista 1
 		if (at11.qt+at12.qt >= dec1.qt && p1Free) { // Verifica o tipo de lista mais vazia
 			if (at11.first == NULL && at12.first == NULL) { // Verifica se alguma pista e vazia
 			} else if (at11.first == NULL) {
@@ -253,9 +206,10 @@ void landAndTakeOffPlanes() {
 				if (at11.first->inf.fuelNow <= at12.first->inf.fuelNow) removePlane(NULL, &at11, 'a') ;
 				else removePlane(NULL, &at12, 'a') ;
 			}
-		} else {
+		} else if (p1Free) {
 			removePlane(NULL, &dec1, 'd') ;
 		}
+		
 		// Pista 2
 		if (at21.qt+at22.qt >= dec2.qt && p2Free) {
 			if (at21.first == NULL && at22.first == NULL) {
@@ -267,19 +221,12 @@ void landAndTakeOffPlanes() {
 				if (at21.first->inf.fuelNow <= at22.first->inf.fuelNow) removePlane(NULL, &at21, 'a') ;
 				else removePlane(NULL, &at22, 'a') ;
 			}
-		} else {
+		} else if (p2Free) {
 			removePlane(NULL, &dec2, 'd') ;
 		}
-	} else if (qtF >= 3) {
+		
 		// Pista 3
-		removePlane(aO[0], aR[0], 'a') ; // Realiza o pouso de emergencia 1
-		
-		// Pista 1
-		removePlane(aO[1], aR[1], 'a') ; // Realiza o pouso de emergencia 2
-		
-		// Pista 2
-		removePlane(aO[2], aR[2], 'a') ; // Realiza o pouso de emergencia 3
-	}
+		if (dec3.first != NULL && p3Free) removePlane(NULL, &dec3, 'd') ;
 }
 
 void planeCrash(Row *r, Plane *o, bool first) {
