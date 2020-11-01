@@ -14,6 +14,8 @@ int qtDec=0, tDec=0 ; // Quantidade de avioes decolados e soma total dos tempos
 
 int qtCrash=0 ; // Quantidade de avioes caidos
 
+int qtEme=0 ; // Quantidade de pousos de emergencia
+
 void createRows() {
 	Row vazia ; // Cria um fila vazia
 	vazia.first = NULL ; vazia.last = NULL ; vazia.qt = 0 ; // atribui os valores iniciais
@@ -34,6 +36,7 @@ Plane* createPlane(char c) {
 		p->inf.id = lastIDP ; // Atribui um avlor de inidice par novo
 		lastIDP += 2 ; // Incrementa o ID
 		p->inf.fuelStart = p->inf.fuelNow = rand()%20 + 1 ; // Gera um combustivel aleatorio
+		printf ("\nID: %d, COmb: %d\n", p->inf.id, p->inf.fuelNow) ;
 	} else {
 		// Decolagem
 		p->inf.id = lastIDI ; // Atribui um avlor de inidice impar novo
@@ -49,6 +52,7 @@ void insertPlane(Plane *p, Row *r) {
 		p->next = NULL ;
 		r->first = r->last = p ;
 	} else { // Se a fila nao esta vazia, realiza o seguinte
+	if (r == &at11) printf ("aaaaaaaaaaaaa") ;
 		p->next = r->last->next ;
 		r->last->next = p ;
 		r->last = p ;
@@ -61,7 +65,7 @@ void generatePlanes() {
 	Row *menA1, *menA2, *menA ;	//variaveis auxiliares criadas para apontar para a fila com menor numero de avioes para aterrissar
 	
 	int qtA = rand()%4 ;	//gera uma quantidade aleatoria de avioes a serem aterrissados
-	
+	printf ("\nQtA: %d\n", qtA) ;
 	for (int i=0; i < qtA; i++) {	//gera um loop que cria e insere a quantidade de avioes que foram gerados nas menores filas
 		menA1 = at11.qt <= at12.qt ? &at11 : &at12 ;
 		menA2 = at21.qt <= at22.qt ? &at21 : &at22 ;
@@ -100,8 +104,9 @@ void removePlane(Plane *o, Row *r, char c) {
 		qtDec++ ; // Aumenta a quantidade de avioes decolados
 		tDec += (p->inf.fuelStart - p->inf.fuelNow) ; // Aumenta o tempo total das decolagens
 	}
-	
+	printf ("\n %c R->Qt: %d\n", c, r->qt) ;
 	r->qt-- ; // Dominui a quantidade
+	printf ("\n %c R->Qt--: %d\n", c, r->qt) ;
 	free(p) ;
 }
 
@@ -156,6 +161,7 @@ int fallPlanes(Plane *aO[3], Row *aR[3]) {
 		if (act11 == NULL && act12 == NULL && act21 == NULL & act22 == NULL) break ;
 	}
 	
+	qtEme += qt ; // Adiciona ao total de pousos de emergencia
 	return qt ; // Retorna a quantidade e por referencia o ponteiro do anterior, ponteiro da fila
 }
 
@@ -174,28 +180,30 @@ void landAndTakeOffPlanes() {
 		
 	} else if (qtF == 2) {
 		// Pista 3
-		removePlane(aO[0], aR[0], 'a') ; // Realiza o pouso de emergencia
+		removePlane(aO[1], aR[1], 'a') ; // Realiza o pouso de emergencia
 		p3Free = false ;
 		
 		// Segundo pouso de emergencia
 		if (at11.qt+at12.qt < at21.qt+at22.qt) p1Free = false ; // Escolhe a pista mais vazia
 		else p2Free = false ;
-		removePlane(aO[1], aR[1], 'a') ;
+		removePlane(aO[0], aR[0], 'a') ;
 		
 	} else if (qtF >= 3) {
 		// Pista 3
-		removePlane(aO[0], aR[0], 'a') ; // Realiza o pouso de emergencia 1
+		removePlane(aO[2], aR[2], 'a') ; // Realiza o pouso de emergencia 1
 		p3Free = false ;
 		// Pista 2
 		removePlane(aO[1], aR[1], 'a') ; // Realiza o pouso de emergencia 2
 		p2Free = false ;
 		// Pista 1
-		removePlane(aO[2], aR[2], 'a') ; // Realiza o pouso de emergencia 3
+		removePlane(aO[0], aR[0], 'a') ; // Realiza o pouso de emergencia 3
 		p1Free = false ;
 	}
 	
 	// Pousa ou decola aviao nas pistas que estao livres
 	// Pista 1
+	bool ola =  at11.qt+at12.qt >= dec1.qt && p1Free ;
+	printf ("\nat11.qt+at12.qt >= dec1.qt && p1Free\n%d+%d >= %d && %d = %d\n", at11.qt, at12.qt, dec1.qt, p1Free, ola) ;
 		if (at11.qt+at12.qt >= dec1.qt && p1Free) { // Verifica o tipo de lista mais vazia
 			if (at11.first == NULL && at12.first == NULL) { // Verifica se alguma pista e vazia
 			} else if (at11.first == NULL) {
@@ -242,8 +250,9 @@ void planeCrash(Row *r, Plane *o, bool first) {
 		
 		free(p) ;
 	}
-	
+	printf ("\nR->Qt Crash: %d\n", r->qt) ;
 	r->qt-- ; // Decrementa a quantidade de avioes
+	printf ("\nR->Qt-- Crash: %d\n", r->qt) ;
 	qtCrash++ ; // Soma a quantidade de avioes caidos
 }
 
@@ -254,10 +263,9 @@ void decreaseFuel() {
 	for (Plane *act=at11.first; act != NULL; act=act->next) {
 		if (act == at11.first) {
 			if (act->inf.fuelNow <= 0) planeCrash(&at11, act, true) ;
-		} else {
-			if (act->next != NULL) {
-				if (act->next->inf.fuelNow <= 0) planeCrash(&at11, act, false) ;
-			}
+		}
+		if (act->next != NULL) {
+			if (act->next->inf.fuelNow <= 0) planeCrash(&at11, act, false) ;
 		}
 		
 		act->inf.fuelNow-- ;
@@ -265,10 +273,9 @@ void decreaseFuel() {
 	for (Plane *act=at12.first; act != NULL; act=act->next) {
 		if (act == at12.first) {
 			if (act->inf.fuelNow <= 0) planeCrash(&at12, act, true) ;
-		} else {
-			if (act->next != NULL) {
-				if (act->next->inf.fuelNow <= 0) planeCrash(&at12, act, false) ;
-			}
+		}
+		if (act->next != NULL) {
+			if (act->next->inf.fuelNow <= 0) planeCrash(&at12, act, false) ;
 		}
 		
 		act->inf.fuelNow-- ;
@@ -276,10 +283,9 @@ void decreaseFuel() {
 	for (Plane *act=at21.first; act != NULL; act=act->next) {
 		if (act == at21.first) {
 			if (act->inf.fuelNow <= 0) planeCrash(&at21, act, true) ;
-		} else {
-			if (act->next != NULL) {
-				if (act->next->inf.fuelNow <= 0) planeCrash(&at21, act, false) ;
-			}
+		}
+		if (act->next != NULL) {
+			if (act->next->inf.fuelNow <= 0) planeCrash(&at21, act, false) ;
 		}
 		
 		act->inf.fuelNow-- ;
@@ -287,10 +293,9 @@ void decreaseFuel() {
 	for (Plane *act=at22.first; act != NULL; act=act->next) {
 		if (act == at22.first) {
 			if (act->inf.fuelNow <= 0) planeCrash(&at22, act, true) ;
-		} else {
-			if (act->next != NULL) {
-				if (act->next->inf.fuelNow <= 0) planeCrash(&at22, act, false) ;
-			}
+		}
+		if (act->next != NULL) {
+			if (act->next->inf.fuelNow <= 0) planeCrash(&at22, act, false) ;
 		}
 		
 		act->inf.fuelNow-- ;
@@ -339,6 +344,7 @@ void showAllRows() {
 
 void status() {
 	printf ("\nQuedas: %d\n", qtCrash) ;
+	printf ("Pousos de emergencia: %d\n", qtEme) ;
 	float avgAt = (float)tAt/(float)qtAt ;
 	printf ("Temp. Med. At.: %d/%d=%.2f\n", tAt, qtAt, avgAt) ;
 	float avgDec = (float)tDec/(float)qtDec ;
