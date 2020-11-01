@@ -4,7 +4,7 @@
 int main() {
 	createRows() ;
 	
-	for (int repet=0; repet < 160; repet++) {
+	for (int repet=0; repet < 10000; repet++) {
 		generatePlanes() ;
 		printf ("-------------Repet %d-------------\n", repet) ;
 		showAllRows() ;

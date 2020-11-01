@@ -36,7 +36,6 @@ Plane* createPlane(char c) {
 		p->inf.id = lastIDP ; // Atribui um avlor de inidice par novo
 		lastIDP += 2 ; // Incrementa o ID
 		p->inf.fuelStart = p->inf.fuelNow = rand()%20 + 1 ; // Gera um combustivel aleatorio
-		printf ("\nID: %d, COmb: %d\n", p->inf.id, p->inf.fuelNow) ;
 	} else {
 		// Decolagem
 		p->inf.id = lastIDI ; // Atribui um avlor de inidice impar novo
@@ -52,7 +51,6 @@ void insertPlane(Plane *p, Row *r) {
 		p->next = NULL ;
 		r->first = r->last = p ;
 	} else { // Se a fila nao esta vazia, realiza o seguinte
-	if (r == &at11) printf ("aaaaaaaaaaaaa") ;
 		p->next = r->last->next ;
 		r->last->next = p ;
 		r->last = p ;
@@ -65,7 +63,7 @@ void generatePlanes() {
 	Row *menA1, *menA2, *menA ;	//variaveis auxiliares criadas para apontar para a fila com menor numero de avioes para aterrissar
 	
 	int qtA = rand()%4 ;	//gera uma quantidade aleatoria de avioes a serem aterrissados
-	printf ("\nQtA: %d\n", qtA) ;
+	
 	for (int i=0; i < qtA; i++) {	//gera um loop que cria e insere a quantidade de avioes que foram gerados nas menores filas
 		menA1 = at11.qt <= at12.qt ? &at11 : &at12 ;
 		menA2 = at21.qt <= at22.qt ? &at21 : &at22 ;
@@ -89,13 +87,15 @@ void generatePlanes() {
 void removePlane(Plane *o, Row *r, char c) {
 	Plane *p ;
 	
-	if (o == NULL) { // Verifica se a aviao antes
+	if (o == NULL) { // Verifica se ha aviao antes
 		p=r->first ; // Recebe aviao a ser removido
 		r->first = p->next ; // Passa o primeiro para o prox
 	} else {
 		p=o->next ; // Recebe o valor a ser removido a partir do anterior
 		o->next = p->next ; // Passa o next do anterior para o seguinte
 	}
+	
+	if (p == r->last) r->last = o ; // Se a posicao a ser removida e a final, atualiza o ponteiro final da fila para o anterior
 	
 	if (c == 'a') {
 		qtAt++ ; // Aumenta a quantidade de avioes aterrissados
@@ -104,9 +104,7 @@ void removePlane(Plane *o, Row *r, char c) {
 		qtDec++ ; // Aumenta a quantidade de avioes decolados
 		tDec += (p->inf.fuelStart - p->inf.fuelNow) ; // Aumenta o tempo total das decolagens
 	}
-	printf ("\n %c R->Qt: %d\n", c, r->qt) ;
 	r->qt-- ; // Dominui a quantidade
-	printf ("\n %c R->Qt--: %d\n", c, r->qt) ;
 	free(p) ;
 }
 
@@ -167,9 +165,10 @@ int fallPlanes(Plane *aO[3], Row *aR[3]) {
 
 void landAndTakeOffPlanes() {
 	// Chama as funcoes para aterrisar ou decolar aviao uma vez em cada pista
-	
+	printf ("aaaaaaaaa") ;
 	Row *aR[3] ; Plane *aO[3] ;
 	int qtF = fallPlanes(aO, aR) ; // Recebe os avioes prestes a cair e suas filas
+	printf ("bbbbbbbbbbb") ;
 	
 	bool p1Free=true, p2Free=true, p3Free=true ; // Marca qual pista foi usada para emergencia e estao livres
 	
@@ -189,21 +188,20 @@ void landAndTakeOffPlanes() {
 		removePlane(aO[0], aR[0], 'a') ;
 		
 	} else if (qtF >= 3) {
+		printf ("eeeeeeeeeeeeeeeeeeeee") ;
 		// Pista 3
 		removePlane(aO[2], aR[2], 'a') ; // Realiza o pouso de emergencia 1
-		p3Free = false ;
+		p3Free = false ; printf ("e1e1ee1e1e1ee1e1ee1e1ee1e1") ;
 		// Pista 2
 		removePlane(aO[1], aR[1], 'a') ; // Realiza o pouso de emergencia 2
-		p2Free = false ;
+		p2Free = false ; printf ("e2e2e2ee2e2e2ee2e2ee2e2e2") ;
 		// Pista 1
 		removePlane(aO[0], aR[0], 'a') ; // Realiza o pouso de emergencia 3
-		p1Free = false ;
+		p1Free = false ; printf ("e3e3e3ee3e3ee3e3ee3e3e3ee3e3e3e3") ;
 	}
-	
+	printf ("yyyyyyyyyyy") ;
 	// Pousa ou decola aviao nas pistas que estao livres
 	// Pista 1
-	bool ola =  at11.qt+at12.qt >= dec1.qt && p1Free ;
-	printf ("\nat11.qt+at12.qt >= dec1.qt && p1Free\n%d+%d >= %d && %d = %d\n", at11.qt, at12.qt, dec1.qt, p1Free, ola) ;
 		if (at11.qt+at12.qt >= dec1.qt && p1Free) { // Verifica o tipo de lista mais vazia
 			if (at11.first == NULL && at12.first == NULL) { // Verifica se alguma pista e vazia
 			} else if (at11.first == NULL) {
@@ -232,15 +230,17 @@ void landAndTakeOffPlanes() {
 		} else if (p2Free) {
 			removePlane(NULL, &dec2, 'd') ;
 		}
-		
+		printf ("zzzzzzzzzz") ;
 		// Pista 3
 		if (dec3.first != NULL && p3Free) removePlane(NULL, &dec3, 'd') ;
 }
 
 void planeCrash(Row *r, Plane *o, bool first) {
-	// Verifica se e a primeira cas ou outras, true =  primeira casa
+	// Verifica se e a primeira casa ou outras, true =  primeira casa
 	if (first) {
 		r->first = o->next ;
+		
+		if (o == r->last) r->last = NULL ; // Se a posicao a ser removida e a final, atualiza o ponteiro final da fila para o anterior
 		
 		free(o) ;
 	} else {
@@ -248,11 +248,11 @@ void planeCrash(Row *r, Plane *o, bool first) {
 		Plane *p = o->next ;
 		o->next = p->next ;
 		
+		if (p == r->last) r->last = o ; // Se a posicao a ser removida e a final, atualiza o ponteiro final da fila para o anterior
+		
 		free(p) ;
 	}
-	printf ("\nR->Qt Crash: %d\n", r->qt) ;
 	r->qt-- ; // Decrementa a quantidade de avioes
-	printf ("\nR->Qt-- Crash: %d\n", r->qt) ;
 	qtCrash++ ; // Soma a quantidade de avioes caidos
 }
 
