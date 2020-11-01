@@ -25,17 +25,23 @@ void createRows() ; // Inicializa as filas
 
 Plane* createPlane(char c) ; // Gera um aviao do tipo determinado e retorna um ponteiro para ele
 
-void insertPlane(Plane *p, Row *r) ; // Insere o avi√£o na fila
+void insertPlane(Plane *p, Row *r) ; // Insere o aviao na fila
 
 void generatePlanes() ; // Gera os avi√µes e insere-os na menor fila
 
-void removePlane(Row *r, char c) ; // Remove o avi„o de uma fila
+void removePlane(Plane *o, Row *r, char c) ; // Remove o avi„o de uma fila
+
+int fallPlanes(Plane *aO[3], Row *aR[3]) ; // Avalia os avioes a cair
 
 void landAndTakeOffPlanes() ; // Pousa os avioes da pista
 
-void planeCrash(Row *r,Plane *o, bool f) ; // Retira o aviao caido da fila
+void planeCrash(Row *r, Plane *o, bool first) ; // Retira o aviao caido da fila
 
 void decreaseFuel() ; // Decrementa o combustivel atual dos avioes nas filas e verifica as quedas
+
+void showRow(Row *r) ; // Mostra em tela uma fila
+
+void showAllRows() ; // Mostra em tela todas as filas
 
 void status() ;
 
