@@ -37,6 +37,8 @@ void landAndTakeOffPlanes() ; // Pousa os avioes da pista
 
 void planeCrash(Row *r, Plane *o, bool first) ; // Retira o aviao caido da fila
 
+Plane* verifyIfPlanesAreGonnaFall(Plane *act, Row *r) ; // Verifica quais avioes estao a cair e retorna para onde a proxima iteracao deve ir
+
 void decreaseFuel() ; // Decrementa o combustivel atual dos avioes nas filas e verifica as quedas
 
 void showRow(Row *r) ; // Mostra em tela uma fila

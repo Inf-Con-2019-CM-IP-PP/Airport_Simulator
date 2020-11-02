@@ -6,12 +6,12 @@ int main() {
 	
 	for (int repet=0; repet < 10000; repet++) {
 		generatePlanes() ;
-		printf ("-------------Repet %d-------------\n", repet) ;
+		/*printf ("-------------Repet %d-------------\n", repet) ;
 		showAllRows() ;
-		printf ("\n") ;
+		printf ("\n") ;*/
 		
 		landAndTakeOffPlanes() ;
-		status() ;
+		//status() ;
 		
 		decreaseFuel() ;
 	}

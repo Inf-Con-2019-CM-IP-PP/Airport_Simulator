@@ -26,6 +26,8 @@ void createRows() {
 }
 
 Plane* createPlane(char c) {
+	srand(time(NULL)) ;
+	
 	// Cria um ponteiro de aviao
 	Plane *p ;
 	p = (Plane *) malloc(sizeof(Plane)) ;
@@ -60,6 +62,7 @@ void insertPlane(Plane *p, Row *r) {
 }
 
 void generatePlanes() {
+	srand(time(NULL)) ;
 	Row *menA1, *menA2, *menA ;	//variaveis auxiliares criadas para apontar para a fila com menor numero de avioes para aterrissar
 	
 	int qtA = rand()%4 ;	//gera uma quantidade aleatoria de avioes a serem aterrissados
@@ -77,7 +80,7 @@ void generatePlanes() {
 	int qtD = rand()%4 ;	//gera uma quantidade aleatoria de avioes a serem decolados
 	
 	for (int i=0; i < qtD; i++) {	//gera um loop que cria e insere a quantidade de avioes que foram gerados nas menores filas
-		menD1 = dec1.qt <= dec2.qt ? &dec1 : &dec2 ;
+		menD1 = dec1.qt < dec2.qt ? &dec1 : &dec2 ;
 		menD = menD1->qt < dec3.qt ? menD1 : &dec3 ;
 		
 		insertPlane(createPlane('d'), menD) ;
@@ -104,6 +107,7 @@ void removePlane(Plane *o, Row *r, char c) {
 		qtDec++ ; // Aumenta a quantidade de avioes decolados
 		tDec += (p->inf.fuelStart - p->inf.fuelNow) ; // Aumenta o tempo total das decolagens
 	}
+	
 	r->qt-- ; // Dominui a quantidade
 	free(p) ;
 }
@@ -165,10 +169,8 @@ int fallPlanes(Plane *aO[3], Row *aR[3]) {
 
 void landAndTakeOffPlanes() {
 	// Chama as funcoes para aterrisar ou decolar aviao uma vez em cada pista
-	printf ("aaaaaaaaa") ;
 	Row *aR[3] ; Plane *aO[3] ;
 	int qtF = fallPlanes(aO, aR) ; // Recebe os avioes prestes a cair e suas filas
-	printf ("bbbbbbbbbbb") ;
 	
 	bool p1Free=true, p2Free=true, p3Free=true ; // Marca qual pista foi usada para emergencia e estao livres
 	
@@ -188,22 +190,21 @@ void landAndTakeOffPlanes() {
 		removePlane(aO[0], aR[0], 'a') ;
 		
 	} else if (qtF >= 3) {
-		printf ("eeeeeeeeeeeeeeeeeeeee") ;
 		// Pista 3
 		removePlane(aO[2], aR[2], 'a') ; // Realiza o pouso de emergencia 1
-		p3Free = false ; printf ("e1e1ee1e1e1ee1e1ee1e1ee1e1") ;
+		p3Free = false ;
 		// Pista 2
 		removePlane(aO[1], aR[1], 'a') ; // Realiza o pouso de emergencia 2
-		p2Free = false ; printf ("e2e2e2ee2e2e2ee2e2ee2e2e2") ;
+		p2Free = false ;
 		// Pista 1
 		removePlane(aO[0], aR[0], 'a') ; // Realiza o pouso de emergencia 3
-		p1Free = false ; printf ("e3e3e3ee3e3ee3e3ee3e3e3ee3e3e3e3") ;
+		p1Free = false ;
 	}
-	printf ("yyyyyyyyyyy") ;
+	
 	// Pousa ou decola aviao nas pistas que estao livres
 	// Pista 1
 		if (at11.qt+at12.qt >= dec1.qt && p1Free) { // Verifica o tipo de lista mais vazia
-			if (at11.first == NULL && at12.first == NULL) { // Verifica se alguma pista e vazia
+			if (at11.first == NULL && at12.first == NULL) { // Verifica se alguma pista e vazia e escolhe a maior
 			} else if (at11.first == NULL) {
 				removePlane(NULL, &at12, 'a') ;
 			} else if (at12.first == NULL) {
@@ -230,7 +231,7 @@ void landAndTakeOffPlanes() {
 		} else if (p2Free) {
 			removePlane(NULL, &dec2, 'd') ;
 		}
-		printf ("zzzzzzzzzz") ;
+		
 		// Pista 3
 		if (dec3.first != NULL && p3Free) removePlane(NULL, &dec3, 'd') ;
 }
@@ -256,60 +257,77 @@ void planeCrash(Row *r, Plane *o, bool first) {
 	qtCrash++ ; // Soma a quantidade de avioes caidos
 }
 
+Plane* verifyIfPlanesAreGonnaFall(Plane *act, Row *r) {
+	Plane *aux=NULL ; // Variavel para onde o act ira na proxima iteracao de onde for chamada a funcao
+	
+	act->inf.fuelNow-- ; // Decrementa 1 do combustivel
+	
+	if (act == r->first) { // Verifica se e a primeira casa
+			if (act->inf.fuelNow < 0) { // Se a primeira casa for < 0
+				aux=act->next ; // O auxiliar recebera a posicao seguinte
+				planeCrash(r, act, true) ; // E apagada a primeira posicao
+				
+				if (aux != NULL) { // Se a posicao seguinte nao for nula
+					act=aux ; // Ele passa o act para a seguinte
+					act->inf.fuelNow-- ;  // Decrementa esse combustivel
+					
+					if (act->inf.fuelNow < 0) { // Se essa posicao tiver com combustivel prestes a cair
+						aux = act->next ; // A auxiliar ira apontar para a proxima de novo
+						planeCrash(r, act, true) ; // Remove essa posicao
+					} else {
+						aux = act->next ; // Se nao, o act na proxima iteracao deve ser o seguinte
+					}
+				}
+			} else if (act->next != NULL) { // Se a primeira casa nao for < 0 e a seguinte nao for nula
+				if (act->next->inf.fuelNow <= 0) { // Verifica a seguinte e <= 0
+					aux = act->next->next ; // Se for 0, o aux ira apontar para o prox do proximo
+					planeCrash(r, act, false) ;	// E a posicao seguinte sera apagada
+				} else { // Se a seguinte nao for 0
+					aux = act->next ; // aux ira apontar para ela
+				}
+			} else { // Se a seguinte for nula
+				aux = act->next ; // aux ira apontar para ela
+			}
+		} else if (act->next != NULL) { // Se nao for a primeira casa e a seguinte nao for nula
+			if (act->next->inf.fuelNow <= 0) { // Verifica se a seguinte e <= 0
+				aux = act->next->next ; // Se for aux apontara para a proxima da proxima
+				planeCrash(r, act, false) ; // Sera removida a posicao
+			} else {
+				aux = act->next ; // Se nao for <=0, aux ira apontar para ela
+			}
+		} else { // Se nao for a primeira casa e for nula
+			aux = act->next ; // aux ira apontar para ela
+		}
+		
+		return aux ; // Retorna aux que e o valor seguinte da iteracao onde foi chamada, apos realizar os procedimentos necessarios
+}
+
 void decreaseFuel() {
 	// Passa em cada fila por todos avioes e decrementa seu combustivel
-	// Quando verificar que o aviao seguinte ao atual esta para se decrementado a -1 remove da fila
+	// Chama tambem uma funcao para realizar remocoes da fila
 	
-	for (Plane *act=at11.first; act != NULL; act=act->next) {
-		if (act == at11.first) {
-			if (act->inf.fuelNow <= 0) planeCrash(&at11, act, true) ;
-		}
-		if (act->next != NULL) {
-			if (act->next->inf.fuelNow <= 0) planeCrash(&at11, act, false) ;
-		}
-		
-		act->inf.fuelNow-- ;
-	}
-	for (Plane *act=at12.first; act != NULL; act=act->next) {
-		if (act == at12.first) {
-			if (act->inf.fuelNow <= 0) planeCrash(&at12, act, true) ;
-		}
-		if (act->next != NULL) {
-			if (act->next->inf.fuelNow <= 0) planeCrash(&at12, act, false) ;
-		}
-		
-		act->inf.fuelNow-- ;
-	}
-	for (Plane *act=at21.first; act != NULL; act=act->next) {
-		if (act == at21.first) {
-			if (act->inf.fuelNow <= 0) planeCrash(&at21, act, true) ;
-		}
-		if (act->next != NULL) {
-			if (act->next->inf.fuelNow <= 0) planeCrash(&at21, act, false) ;
-		}
-		
-		act->inf.fuelNow-- ;
-	}
-	for (Plane *act=at22.first; act != NULL; act=act->next) {
-		if (act == at22.first) {
-			if (act->inf.fuelNow <= 0) planeCrash(&at22, act, true) ;
-		}
-		if (act->next != NULL) {
-			if (act->next->inf.fuelNow <= 0) planeCrash(&at22, act, false) ;
-		}
-		
-		act->inf.fuelNow-- ;
-	}
+	Plane *aux=NULL ;
+	// Pista 1 Fila Aterrissagem 1 
+	for (Plane *act=at11.first; act != NULL; act=aux) aux = verifyIfPlanesAreGonnaFall(act, &at11) ; // Chama a funcao que faz as devidas exclusoes de acordo com a posicao e retorna a proxima posicao da iteracao
 	
-	for (Plane *act=dec1.first; act != NULL; act=act->next) {
-		act->inf.fuelNow-- ;
-	}
-	for (Plane *act=dec2.first; act != NULL; act=act->next) {
-		act->inf.fuelNow-- ;
-	}
-	for (Plane *act=dec3.first; act != NULL; act=act->next) {
-		act->inf.fuelNow-- ;
-	}
+	// Pista 1 Fila Aterrissagem 2
+	for (Plane *act=at12.first; act != NULL; act=aux) aux = verifyIfPlanesAreGonnaFall(act, &at12) ;
+	
+	// Pista 2 Fila Aterrissagem 1
+	for (Plane *act=at21.first; act != NULL; act=aux) aux = verifyIfPlanesAreGonnaFall(act, &at21) ;
+	
+	// Pista 2 Fila Aterrissagem 2
+	for (Plane *act=at22.first; act != NULL; act=aux) aux = verifyIfPlanesAreGonnaFall(act, &at22) ;
+	
+	
+	// Pista 1 Fila Decolagem
+	for (Plane *act=dec1.first; act != NULL; act=act->next) act->inf.fuelNow-- ;
+	
+	// Pista 2 Fila Decolagem
+	for (Plane *act=dec2.first; act != NULL; act=act->next) act->inf.fuelNow-- ;
+	
+	// Pista 3 Fila Decolagem 1
+	for (Plane *act=dec3.first; act != NULL; act=act->next) act->inf.fuelNow-- ;
 }
 
 void showRow(Row *r) {
