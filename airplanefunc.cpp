@@ -332,17 +332,16 @@ void decreaseFuel() {
 
 void showRow(Row *r) {
 	printf ("\t") ;
-	for (Plane *act=r->first; act != NULL; act=act->next) {
-		//printf ("____________________\n") ;
-		printf("\t| ID: %d  Fuel: %d |", act->inf.id, act->inf.fuelNow) ;
-		//printf ("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45) ;
+	for (Plane *act=r->first; act != NULL; act=act->next) { // Passa por toda a fila
+		printf("\t| ID: %d  Fuel: %d |", act->inf.id, act->inf.fuelNow) ; // Printa na tela o aviao
 	}
 }
 
 void showAllRows() {
+	// Printa as filas
 	printf ("Pista 1\n") ;
 	printf ("\tAt11:\n") ;
-	showRow(&at11) ;
+	showRow(&at11) ; // Chama a funcao de printar na fila especifica
 	printf ("\n\tAt12:\n") ;
 	showRow(&at12) ;
 	printf ("\n\tDec1:\n") ;
@@ -361,10 +360,10 @@ void showAllRows() {
 }
 
 void status() {
-	printf ("\nQuedas: %d\n", qtCrash) ;
-	printf ("Pousos de emergencia: %d\n", qtEme) ;
-	float avgAt = (float)tAt/(float)qtAt ;
-	printf ("Temp. Med. At.: %d/%d=%.2f\n", tAt, qtAt, avgAt) ;
-	float avgDec = (float)tDec/(float)qtDec ;
-	printf ("Temp. Med. Dec.: %d/%d=%.2f\n", tDec, qtDec, avgDec) ;
+	printf ("\nQuedas: %d\n", qtCrash) ; // Quantidade de quesdas
+	printf ("Pousos de emergencia: %d\n", qtEme) ; // Quantidade de pousos de emergencia
+	float avgAt = (float)tAt/(float)qtAt ; // Calcula a media de tempo de aterrissgaem
+	printf ("Temp. Med. At.: %d/%d=%.2f\n", tAt, qtAt, avgAt) ; // Media de tempo de aterrissagem
+	float avgDec = (float)tDec/(float)qtDec ; // Calcula a media de tempo de decolagem
+	printf ("Temp. Med. Dec.: %d/%d=%.2f\n", tDec, qtDec, avgDec) ; // Media de tempo de decolagem
 }

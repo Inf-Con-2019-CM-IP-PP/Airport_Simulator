@@ -45,6 +45,6 @@ void showRow(Row *r) ; // Mostra em tela uma fila
 
 void showAllRows() ; // Mostra em tela todas as filas
 
-void status() ;
+void status() ; // Printa em tela os status atuais observados
 
 #endif
