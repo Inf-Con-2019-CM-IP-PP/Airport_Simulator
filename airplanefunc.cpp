@@ -362,8 +362,9 @@ void showAllRows() {
 void status() {
 	printf ("\nQuedas: %d\n", qtCrash) ; // Quantidade de quesdas
 	printf ("Pousos de emergencia: %d\n", qtEme) ; // Quantidade de pousos de emergencia
+	printf ("Tempo medio = Soma dos tempos / Quantidadede avioes\n") ; // Equação usada para tempo medio 
 	float avgAt = (float)tAt/(float)qtAt ; // Calcula a media de tempo de aterrissgaem
-	printf ("Temp. Med. At.: %d/%d=%.2f\n", tAt, qtAt, avgAt) ; // Media de tempo de aterrissagem
+	printf ("Temp. Med. At.: %d/%d=%.2f\n", tAt, qtAt, avgAt) ; // Media de tempo de aterrissagem e quantidade de aterrissados
 	float avgDec = (float)tDec/(float)qtDec ; // Calcula a media de tempo de decolagem
-	printf ("Temp. Med. Dec.: %d/%d=%.2f\n", tDec, qtDec, avgDec) ; // Media de tempo de decolagem
+	printf ("Temp. Med. Dec.: %d/%d=%.2f\n", tDec, qtDec, avgDec) ; // Media de tempo de decolagem e quantidade de decolagem
 }
