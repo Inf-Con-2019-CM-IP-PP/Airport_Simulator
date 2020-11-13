@@ -2,21 +2,21 @@
 #include <stdio.h>
 
 int main() {
-	createRows() ;
+	createRows() ; // Inicializa as filas
 	
-	for (int repet=0; repet < 10000; repet++) {
-		generatePlanes() ;
-		printf ("-------------Repet %d-------------\n", repet) ;
-		showAllRows() ;
+	for (int repet=0; repet < 10000; repet++) { // Faz a repeticao
+		generatePlanes() ; // Faz a geracao dos avioes
+		printf ("-------------Repet %d-------------\n", repet) ; // Indica a repeticao
+		showAllRows() ; // Mostra os estados atuais das filas
 		printf ("\n") ;
 		
-		landAndTakeOffPlanes() ;
-		status() ;
+		landAndTakeOffPlanes() ; // Realiza as aterrissagens/decolagens
+		status() ; // Mostra os status
 		
-		decreaseFuel() ;
+		decreaseFuel() ; // Faz os procedimentos de fim de cada repeticao
 	}
 	
-	status() ;
+	status() ; // Mostra os status finais
 	
 	return 0 ;
 }
