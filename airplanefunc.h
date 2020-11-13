@@ -10,8 +10,8 @@ struct Info { // Informacoes de cada aviao
 };
 
 struct Plane { // Aviao
-	Info inf ; // Um conjunto de informações
-	Plane *next ; // Ponteiro para o proximo avião
+	Info inf ; // Um conjunto de informaÃ§Ãµes
+	Plane *next ; // Ponteiro para o proximo aviÃ£o
 };
 
 struct Row { // Fila
@@ -27,9 +27,9 @@ Plane* createPlane(char c) ; // Gera um aviao do tipo determinado e retorna um p
 
 void insertPlane(Plane *p, Row *r) ; // Insere o aviao na fila
 
-void generatePlanes() ; // Gera os aviões e insere-os na menor fila
+void generatePlanes() ; // Gera os aviÃµes e insere-os na menor fila
 
-void removePlane(Plane *o, Row *r, char c) ; // Remove o avi�o de uma fila
+void removePlane(Plane *o, Row *r, char c) ; // Remove o avião de uma fila
 
 int fallPlanes(Plane *aO[3], Row *aR[3]) ; // Avalia os avioes a cair
 
@@ -41,7 +41,7 @@ Plane* verifyIfPlanesAreGonnaFall(Plane *act, Row *r) ; // Verifica quais avioes
 
 void decreaseFuel() ; // Decrementa o combustivel atual dos avioes nas filas e verifica as quedas
 
-void showRow(Row *r) ; // Mostra em tela uma fila
+void showRow(Row *r, char c) ; // Mostra em tela uma fila
 
 void showAllRows() ; // Mostra em tela todas as filas
 
