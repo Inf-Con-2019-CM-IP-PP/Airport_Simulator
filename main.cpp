@@ -1,5 +1,5 @@
 /*
-	Projeto de simulador de aeroporto - Trabalho prático da disciplina de Linguagem e Técnicas de Programação - CEFET-MG Campus Contagem
+	Projeto de simulador de aeroporto - Trabalho prático da disciplina de Linguagem e Técnicas de Programação 1 - CEFET-MG Campus Contagem
 	Ano: 2020
 	Autores: Carlos Márcio Moreira Costa, Isadellis Luisa da Paixão Teixeira, Pedro Henrique Gonçalves Pires
 	Descrição: Arquivo em que está sendo implementada a função principal, que roda as repetições de funcionamento do aeroporto,
