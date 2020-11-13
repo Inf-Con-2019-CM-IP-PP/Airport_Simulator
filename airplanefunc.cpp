@@ -26,7 +26,7 @@ void createRows() {
 }
 
 Plane* createPlane(char c) {
-	srand(time(NULL)) ;
+	// srand(time(NULL)) ; // Mudar a semente de aleatoriedade
 	
 	// Cria um ponteiro de aviao
 	Plane *p ;
@@ -62,7 +62,7 @@ void insertPlane(Plane *p, Row *r) {
 }
 
 void generatePlanes() {
-	srand(time(NULL)) ;
+	// srand(time(NULL)) ; // Mudar a semente de aleatoriedade
 	Row *menA1, *menA2, *menA ;	//variaveis auxiliares criadas para apontar para a fila com menor numero de avioes para aterrissar
 	
 	int qtA = rand()%4 ;	//gera uma quantidade aleatoria de avioes a serem aterrissados
