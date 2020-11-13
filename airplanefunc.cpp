@@ -331,7 +331,7 @@ void decreaseFuel() {
 	
 	
 	// Pista 1 Fila Decolagem
-	for (Plane *act=dec1.first; act != NULL; act=act->next) act->inf.fuelNow-- ;
+	for (Plane *act=dec1.first; act != NULL; act=act->next) act->inf.fuelNow-- ; // "Decrementa" o combustivel do aviao da decolagem apenas para marcar tempo de iteracao
 	
 	// Pista 2 Fila Decolagem
 	for (Plane *act=dec2.first; act != NULL; act=act->next) act->inf.fuelNow-- ;
