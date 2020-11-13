@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+// Variaveis globais
+
 Row at11, at12, at21, at22 ; // Filas de aterrissagem
 Row dec1, dec2, dec3 ; // Filas de decolagem
 
@@ -16,6 +18,10 @@ int qtCrash=0 ; // Quantidade de avioes caidos
 
 int qtEme=0 ; // Quantidade de pousos de emergencia
 
+// Funcoes
+
+
+									// Funcoes de inicio
 void createRows() {
 	Row vazia ; // Cria um fila vazia
 	vazia.first = NULL ; vazia.last = NULL ; vazia.qt = 0 ; // atribui os valores iniciais
@@ -87,6 +93,8 @@ void generatePlanes() {
 	}
 }
 
+
+									// Funcoes intermediarias
 void removePlane(Plane *o, Row *r, char c) {
 	Plane *p ;
 	
@@ -236,6 +244,8 @@ void landAndTakeOffPlanes() {
 		if (dec3.first != NULL && p3Free) removePlane(NULL, &dec3, 'd') ;
 }
 
+
+									// Funcoes de finalizacao
 void planeCrash(Row *r, Plane *o, bool first) {
 	// Verifica se e a primeira casa ou outras, true =  primeira casa
 	if (first) {
@@ -330,6 +340,8 @@ void decreaseFuel() {
 	for (Plane *act=dec3.first; act != NULL; act=act->next) act->inf.fuelNow-- ;
 }
 
+
+									// Funcoes de status
 void showRow(Row *r, char c) {
 	printf ("\t") ;
 	if (c == 'a') { // Verifica qual o tipode fila
