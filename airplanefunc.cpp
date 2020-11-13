@@ -382,13 +382,13 @@ void status() {
 	printf ("Pousos de emergencia: %d\n", qtEme) ; // Quantidade de pousos de emergencia
 	printf ("Tempo medio = Soma dos tempos / Quantidade de avioes\n") ; // Equacao usada para tempo medio
 	if (qtAt != 0) { // Testa se avioes foram aterrissados
- 	float avgAt = (float)tAt/(float)qtAt ; // Calcula a media de tempo de aterrissagem
+ 		float avgAt = (float)tAt/(float)qtAt ; // Calcula a media de tempo de aterrissagem
 		printf ("Temp. Med. At.: %d/%d=%.2f\n", tAt, qtAt, avgAt) ; // Media de tempo de aterrissagem e quantidade de aterrissados
 	} else {
 		printf ("Nenhum aviao foi aterrissado\n") ; // Avisa que nao aterrissou nenhum aviao
  	}
 	if (qtDec != 0) { // Testa se avioes foram decolados
- 	float avgDec = (float)tDec/(float)qtDec ; // Calcula a media de tempo de decolagem
+ 		float avgDec = (float)tDec/(float)qtDec ; // Calcula a media de tempo de decolagem
 		printf ("Temp. Med. Dec.: %d/%d=%.2f\n", tDec, qtDec, avgDec) ; // Media de tempo de decolagem e quantidade de decolagem
 	} else {
 		printf ("Nenhum aviao foi decolado\n") ; // Avisa que nao decolou nenhum aviao
