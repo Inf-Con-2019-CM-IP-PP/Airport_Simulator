@@ -21,6 +21,8 @@ struct Row { // Fila
 
 // Assinatura funcoes
 
+
+									// Funcoes de inicio
 void createRows() ; // Inicializa as filas
 
 Plane* createPlane(char c) ; // Gera um aviao do tipo determinado e retorna um ponteiro para ele
@@ -29,18 +31,24 @@ void insertPlane(Plane *p, Row *r) ; // Insere o aviao na fila
 
 void generatePlanes() ; // Gera os avioes e insere-os na menor fila
 
+
+									// Funcoes intermediarias
 void removePlane(Plane *o, Row *r, char c) ; // Remove o avião de uma fila
 
 int fallPlanes(Plane *aO[3], Row *aR[3]) ; // Avalia os avioes a cair
 
-void landAndTakeOffPlanes() ; // Pousa os avioes da pista
+void landAndTakeOffPlanes() ; // Pousa os avioes das pistas
 
+
+									// Funcoes de finalizacao
 void planeCrash(Row *r, Plane *o, bool first) ; // Retira o aviao caido da fila
 
 Plane* verifyIfPlanesAreGonnaFall(Plane *act, Row *r) ; // Verifica quais avioes estao a cair e retorna para onde a proxima iteracao deve ir
 
 void decreaseFuel() ; // Decrementa o combustivel atual dos avioes nas filas e verifica as quedas
 
+
+									// Funcoes de status
 void showRow(Row *r, char c) ; // Mostra em tela uma fila
 
 void showAllRows() ; // Mostra em tela todas as filas
