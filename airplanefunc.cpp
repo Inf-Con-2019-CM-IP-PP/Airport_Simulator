@@ -330,10 +330,16 @@ void decreaseFuel() {
 	for (Plane *act=dec3.first; act != NULL; act=act->next) act->inf.fuelNow-- ;
 }
 
-void showRow(Row *r) {
+void showRow(Row *r, char c) {
 	printf ("\t") ;
-	for (Plane *act=r->first; act != NULL; act=act->next) { // Passa por toda a fila
-		printf("\t| ID: %d  Fuel: %d |", act->inf.id, act->inf.fuelNow) ; // Printa na tela o aviao
+	if (c == 'a') { // Verifica qual o tipode fila
+		for (Plane *act=r->first; act != NULL; act=act->next) { // Passa por toda a fila
+			printf("\t| ID: %d  Fuel: %d |", act->inf.id, act->inf.fuelNow) ; // Printa na tela o aviao
+		}
+	} else {
+		for (Plane *act=r->first; act != NULL; act=act->next) { // Passa por toda a fila
+			printf("\t| ID: %d  Fuel: 20* |", act->inf.id) ; // Printa na tela o aviao
+		}
 	}
 }
 
@@ -341,28 +347,28 @@ void showAllRows() {
 	// Printa as filas
 	printf ("Pista 1\n") ;
 	printf ("\tAt11:\n") ;
-	showRow(&at11) ; // Chama a funcao de printar na fila especifica
+	showRow(&at11, 'a') ; // Chama a funcao de printar na fila especifica
 	printf ("\n\tAt12:\n") ;
-	showRow(&at12) ;
+	showRow(&at12, 'a') ;
 	printf ("\n\tDec1:\n") ;
-	showRow(&dec1) ;
+	showRow(&dec1, 'd') ;
 	printf ("\n\nPista 2\n") ;
 	printf ("\tAt21:\n") ;
-	showRow(&at21) ;
+	showRow(&at21, 'a') ;
 	printf ("\n\tAt22:\n") ;
-	showRow(&at22) ;
+	showRow(&at22, 'a') ;
 	printf ("\n\tDec2:\n") ;
-	showRow(&dec2) ;
+	showRow(&dec2, 'd') ;
 	printf ("\n\nPista 3\n") ;
 	printf ("\tDec3:\n") ;
-	showRow(&dec3) ;
+	showRow(&dec3, 'd') ;
 	printf ("\n") ;
 }
 
 void status() {
 	printf ("\nQuedas: %d\n", qtCrash) ; // Quantidade de quesdas
 	printf ("Pousos de emergencia: %d\n", qtEme) ; // Quantidade de pousos de emergencia
-	printf ("Tempo medio = Soma dos tempos / Quantidadede avioes\n") ; // Equação usada para tempo medio 
+	printf ("Tempo medio = Soma dos tempos / Quantidadede avioes\n") ; // EquaÃ§Ã£o usada para tempo medio 
 	float avgAt = (float)tAt/(float)qtAt ; // Calcula a media de tempo de aterrissgaem
 	printf ("Temp. Med. At.: %d/%d=%.2f\n", tAt, qtAt, avgAt) ; // Media de tempo de aterrissagem e quantidade de aterrissados
 	float avgDec = (float)tDec/(float)qtDec ; // Calcula a media de tempo de decolagem
