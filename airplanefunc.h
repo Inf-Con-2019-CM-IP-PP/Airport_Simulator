@@ -1,3 +1,9 @@
+/*
+	Projeto de simulador de aeroporto - Trabalho prático da disciplina de Linguagem e Técnicas de Programação - CEFET-MG Campus Contagem
+	Ano: 2020
+	Autores: Carlos Márcio Moreira Costa, Isadellis Luisa da Paixão Teixeira, Pedro Henrique Gonçalves Pires
+	Descrição: Arquivo header contendo as assinaturas das funções implementadas no arquivo "airplanefunc.cpp".
+*/
 #ifndef AIRPLANEFUNC_H
 #define AIRPLANEFUNC_H
 
