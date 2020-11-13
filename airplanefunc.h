@@ -10,8 +10,8 @@ struct Info { // Informacoes de cada aviao
 };
 
 struct Plane { // Aviao
-	Info inf ; // Um conjunto de informaÃ§Ãµes
-	Plane *next ; // Ponteiro para o proximo aviÃ£o
+	Info inf ; // Um conjunto de informacoes
+	Plane *next ; // Ponteiro para o proximo aviao
 };
 
 struct Row { // Fila
@@ -27,7 +27,7 @@ Plane* createPlane(char c) ; // Gera um aviao do tipo determinado e retorna um p
 
 void insertPlane(Plane *p, Row *r) ; // Insere o aviao na fila
 
-void generatePlanes() ; // Gera os aviÃµes e insere-os na menor fila
+void generatePlanes() ; // Gera os avioes e insere-os na menor fila
 
 void removePlane(Plane *o, Row *r, char c) ; // Remove o avião de uma fila
 
