@@ -375,7 +375,7 @@ void status() {
 	} else {
 		printf ("Nenhum aviao foi aterrissado") ; // Avisa que nao aterrissou nenhum aviao
 	}
-	if (qtDec != 0) {
+	if (qtDec != 0) { // Testa se avioes foram decolados
 		float avgDec = (float)tDec/(float)qtDec ; // Calcula a media de tempo de decolagem
 		printf ("Temp. Med. Dec.: %d/%d=%.2f\n", tDec, qtDec, avgDec) ; // Media de tempo de decolagem e quantidade de decolagem
 	} else {
